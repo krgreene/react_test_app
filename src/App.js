@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
-import AddTodo from './components/addTodo';
 import TodoList from './components/todoList';
 
 function App() {
@@ -20,7 +19,7 @@ function App() {
   return (
     <div className='app'>
       <TodoList data={data.task} />
-      <AddTodo />
+      
     </div>    
   );
   

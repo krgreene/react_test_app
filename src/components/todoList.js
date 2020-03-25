@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import TodoItem from './todoItem';
 import axios from 'axios';
+
+import AddTodo from './addTodo';
+import TodoItem from './todoItem';
 
 function TodoList(props) {
 
@@ -33,6 +35,14 @@ function TodoList(props) {
       });    
   }
 
+  const handleAdd = (newItem, message) => {
+    if (newItem !== null) {
+      data.push(newItem);
+      setTasks(data);
+    }
+    setStatus(message);
+  }
+
   return (
     <div className='todoList'>
       <h1>Todo List</h1>
@@ -40,6 +50,7 @@ function TodoList(props) {
         {tasks.map((item, index) => (
           <TodoItem item={item} key={index} onDelete={handleDelete} />
         ))}
+      <AddTodo onAdd={handleAdd} />
     </div>    
   );
   
