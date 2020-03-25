@@ -3,9 +3,8 @@ import axios from 'axios';
 import './App.css';
 import AddTodo from './components/addTodo';
 import TodoList from './components/todoList';
-import StatusBar from './components/statusBar';
 
-function App(props) {
+function App() {
 
   const [data, setData] = useState({task:[]})
   
@@ -20,7 +19,6 @@ function App(props) {
 
   return (
     <div className='app'>
-      <StatusBar />
       <TodoList data={data.task} />
       <AddTodo />
     </div>    
