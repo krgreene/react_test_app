@@ -1,5 +1,7 @@
 body {
-  margin: 0;
+  margin: 10px;
+  padding: 25px;
+  background-color: lightblue;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +12,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+button {
+  background-color: steelblue;
+  color:white;
+  margin-top:20px;
+}
+
+.editButton {
+  margin-left: 100px;
+}
+
+.deleteButton {
+  background-color: red;
 }

@@ -1,13 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Modal from 'react-modal';
 
 function TodoItem(props) {
+
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [done, setDone] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    Modal.setAppElement('body');
+
+    const onShowModal = () => {
+        setTitle(props.item.title);
+        setDescription(props.item.description);
+        setDone(props.item.done);        
+    }
+
+    const dismissModal = () => {
+        setModalIsOpen(false);
+    }
+
+    const handleChange = (event) => {
+        const source = event.target;
+        switch(source.id) {
+            case 'titleField':
+                setTitle(source.value);
+                break;
+            case 'descriptionField':
+                setDescription(source.value);
+                break;
+            case 'doneField':
+                setDone(source.checked);
+                break;
+            default:
+                break;
+        }
+    }
+
+    const handleSave = (event) => {
+        event.preventDefault();
+        console.log(done)
+
+        const task = {
+            title:title,
+            description:description,
+            done:done,
+            uri:props.item.uri
+        };
+        dismissModal();
+        props.onSave(task);
+    }
 
     const handleDelete = () => {
         props.onDelete(props.item.uri);
     }
 
     const handleEdit = () => {
-
+        setModalIsOpen(true);
     }
 
     return (
@@ -18,6 +67,21 @@ function TodoItem(props) {
               <button className="deleteButton" onClick={handleDelete} >Delete</button>
               <button className="editButton" onClick={handleEdit}>Edit</button>
             </div>
+            <hr />
+            <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={onShowModal}
+                onRequestClose={dismissModal}
+                shouldCloseOnEsc={true}
+                shouldReturnFocusAfterClose={true} >                
+                <h2>Edit Task</h2>
+                <form onSubmit={handleSave} >
+                    <div>Title: <input type='text' id='titleField' defaultValue={title} onChange={handleChange} /></div>
+                    <div>Description: <input type='text' id='descriptionField' defaultValue={description} onChange={handleChange} /></div>
+                    <div>Done: <input type='checkbox' id='doneField' defaultChecked={done} onChange={handleChange} /></div>
+                    <div><button type='submit'>Save</button></div>
+                </form>
+            </Modal>
         </div>
     )
 }

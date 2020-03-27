@@ -43,12 +43,33 @@ function TodoList(props) {
     setStatus(message);
   }
 
+  const handleSave = (item) => {
+    console.log(item)
+    axios.put(item.uri, item)
+      .then((response) => {
+        console.log(item)
+        console.log(response.data)
+        if (response.request.status === 200) {
+          const index = data.findIndex(arrayItem => arrayItem.uri === item.uri);
+          data.splice(index, 1);
+          data.push(item);
+          setTasks(data);
+          setStatus('Your changes have been saved');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setStatus('Your changes were not saved!');
+      })
+
+  }
+
   return (
     <div className='todoList'>
       <h1>Todo List</h1>
       <h4>{status}</h4>
         {tasks.map((item, index) => (
-          <TodoItem item={item} key={index} onDelete={handleDelete} />
+          <TodoItem item={item} key={index} onDelete={handleDelete} onSave={handleSave} />
         ))}
       <AddTodo onAdd={handleAdd} />
     </div>    

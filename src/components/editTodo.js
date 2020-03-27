@@ -1,50 +1,76 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import Modal from 'react-modal';
 
-function EditTodo() {
+function EditTodo(props) {
 
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('')
-    const [status, setStatus] = useState('')
+    const [description, setDescription] = useState('');
+    const [done, setDone] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(true);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const task = {
-            title: title,
-            description: description
-        }
-        axios.put('http://localhost:5000/todo/api/v1.0/tasks', 
-            task)
-            .then((response) => {
-                console.log(response);
-                console.log(response.data);
-                response.request.status === 201? setStatus('Saved'): setStatus('Error Saving!')
-            })
-            .catch((error) =>{
-                console.log(error);
-            });
+    const titleField = React.createRef();
+    const descriptionField = React.createRef();
+    const doneField = React.createRef();
+
+    Modal.setAppElement('body');
+
+    const onShowModal = () => {
+        
+    }
+
+    const dismissModal = () => {
+        setModalIsOpen(false);
     }
 
     const handleChange = (event) => {
-        if (event.target.placeholder === 'Title') {
-            setTitle(event.target.value);
-        } else {
-            setDescription(event.target.value);
+        const source = event.target;
+        switch(source.ref) {
+            case titleField:
+                setTitle(source.value);
+                break;
+            case descriptionField:
+                setDescription(source.value);
+                break;
+            case doneField:
+                setDone(source.value);
+                break;
+            default:
+                break;
         }
     }
 
+    const handleSave = (event) => {
+        event.preventDefault();
+        done === 1? setDone(true): setDone(false);
+
+        const task = {
+            id:props.item.id,
+            title:title,
+            description:description,
+            done:done
+        };
+        dismissModal();
+        props.onSaveEdit(task);
+    }
+
     return (
-        <div className='todoForm'>
-            <h2>New task</h2>
-            <h4>{status}</h4>
-            <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='Title' required onChange={handleChange} />
-                <input type='text' placeholder='Description' onChange={handleChange} />
-                <button type='submit'>Save</button>
-            </form>    
-        </div>    
+        <div className='editTodo'>
+            <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={onShowModal}
+                onRequestClose={dismissModal}
+                shouldCloseOnEsc={true}
+                shouldReturnFocusAfterClose={true} >                
+                <h2>Edit Todo</h2>
+                <form id={'editForm'} onSubmit={handleSave} >
+                    <input label={'Title: '} type='text' ref={titleField} value={props.item.title} onChange={handleChange} />
+                    <input label={'Description: '} type='text' ref={descriptionField} value={props.item.description} onChange={handleChange} />
+                    <input label={'Done: '} type='checkbox' ref={doneField} value={props.item.done} onChange={handleChange} />
+                    <button type='submit'>Save</button> 
+                </form>
+            </Modal>
+        </div>
     )
-  
-}  
+}
 
 export default EditTodo;
