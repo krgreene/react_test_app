@@ -13,7 +13,7 @@ function TodoList(props) {
 
   useEffect(
     () => {
-      setTasks(data);      
+      setTasks(data); 
     }, [data]
   );
   

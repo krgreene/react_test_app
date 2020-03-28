@@ -13,7 +13,7 @@ function TodoItem(props) {
     const onShowModal = () => {
         setTitle(props.item.title);
         setDescription(props.item.description);
-        setDone(props.item.done);        
+        setDone(props.item.done);      
     }
 
     const dismissModal = () => {
@@ -58,27 +58,33 @@ function TodoItem(props) {
     const handleEdit = () => {
         setModalIsOpen(true);
     }
-
+    
     return (
-        <div className='todoItem'>
-            <h4>{props.item.title}</h4>
-            {props.item.description}
+        <div className='todoItem' >
+            <h4 className={'todo'} id ={'todo'}>{props.item.title}</h4>
+            <p className={'todo'}>{props.item.description}</p>
             <div>
               <button className="deleteButton" onClick={handleDelete} >Delete</button>
               <button className="editButton" onClick={handleEdit}>Edit</button>
             </div>
             <hr />
+
             <Modal
+                className={'modal'}
+                // overlayClassName={'modalOverlay'}
                 isOpen={modalIsOpen}
                 onAfterOpen={onShowModal}
                 onRequestClose={dismissModal}
+                shouldCloseOnOverlayClick={true}
                 shouldCloseOnEsc={true}
                 shouldReturnFocusAfterClose={true} >                
                 <h2>Edit Task</h2>
                 <form onSubmit={handleSave} >
-                    <div>Title: <input type='text' id='titleField' defaultValue={title} onChange={handleChange} /></div>
-                    <div>Description: <input type='text' id='descriptionField' defaultValue={description} onChange={handleChange} /></div>
-                    <div>Done: <input type='checkbox' id='doneField' defaultChecked={done} onChange={handleChange} /></div>
+                    <div>Title:<br />
+                    <input name={'Title'} className={'text'} type='text' id='titleField' defaultValue={title} onChange={handleChange} /></div>
+                    <div>Description:<br />
+                    <textarea className={'text'} rows={2} id='descriptionField' defaultValue={description} onChange={handleChange} /></div>
+                    <div>Done: <input className={'checkbox'} type='checkbox' id='doneField' defaultChecked={done} onChange={handleChange} /></div>
                     <div><button type='submit'>Save</button></div>
                 </form>
             </Modal>

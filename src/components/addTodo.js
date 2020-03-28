@@ -43,8 +43,8 @@ function AddTodo(props) {
             <h2>New task</h2>
             {/* <h4>{status}</h4> */}
             <form id={'todoForm'} onSubmit={handleSubmit}>
-                <div><input type='text' placeholder='Title' required onChange={handleChange} /></div>
-                <div><input type='text' placeholder='Description' onChange={handleChange} /></div>
+                <div><input className={'text'} type='text' placeholder='Title' required onChange={handleChange} /></div>
+                <div><textarea className={'text'} rows={2} placeholder='Description' onChange={handleChange} /></div>
                 <div><button type='submit'>Add</button></div>                
             </form>    
         </div>    
