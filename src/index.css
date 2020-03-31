@@ -52,6 +52,11 @@ h4 {
   font-style: italic;
 }
 
+.todo {
+  text-decoration: none;
+}
+
 .todoDone {
   text-decoration: line-through;
 }
+

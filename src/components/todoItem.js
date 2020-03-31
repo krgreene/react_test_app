@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 function TodoItem(props) {
@@ -7,8 +7,17 @@ function TodoItem(props) {
     const [description, setDescription] = useState('');
     const [done, setDone] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [className, setClassName] = useState('todo');
 
     Modal.setAppElement('body');
+
+    useEffect(() => {
+        if (props.item.done === true || props.item.done === 1) {
+            setClassName('todoDone');
+        } else {
+            setClassName('todo');
+        }
+    }, [className, props.item.done])
 
     const onShowModal = () => {
         setTitle(props.item.title);
@@ -58,11 +67,11 @@ function TodoItem(props) {
     const handleEdit = () => {
         setModalIsOpen(true);
     }
-    
+ 
     return (
         <div className='todoItem' >
-            <h4 className={'todo'} id ={'todo'}>{props.item.title}</h4>
-            <p className={'todo'}>{props.item.description}</p>
+            <h4 className={className} id ={'todo'}>{props.item.title}</h4>
+            <p className={className}>{props.item.description}</p>
             <div>
               <button className="deleteButton" onClick={handleDelete} >Delete</button>
               <button className="editButton" onClick={handleEdit}>Edit</button>
