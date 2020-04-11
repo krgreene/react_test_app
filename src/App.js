@@ -5,11 +5,12 @@ import TodoList from './components/todoList';
 
 function App() {
 
-  const [data, setData] = useState({task:[]})
+  const [data, setData] = useState([])
   
   async function fetchData(url) {
     const result = await axios(url);
-    setData(result.data);
+    setData(result.data.task);
+    // console.log(result.data.task)
   }
 
   useEffect(() => {
@@ -18,8 +19,7 @@ function App() {
 
   return (
     <div className='app'>
-      <TodoList data={data.task} />
-      
+      <TodoList data={data} />      
     </div>    
   );
   

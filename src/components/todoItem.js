@@ -8,29 +8,39 @@ function TodoItem(props) {
     const [done, setDone] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [className, setClassName] = useState('todo');
+    const [formMessage, setFormMessage] = useState('')
+    const [changed, setChanged] = useState(false);
 
     Modal.setAppElement('body');
 
     useEffect(() => {
-        if (props.item.done === true || props.item.done === 1) {
+        if (props.item.done === 1) {
             setClassName('todoDone');
         } else {
             setClassName('todo');
         }
-    }, [className, props.item.done])
+        // console.log(props.item.done)
+    }, [props.item.done])
 
     const onShowModal = () => {
         setTitle(props.item.title);
         setDescription(props.item.description);
-        setDone(props.item.done);      
+        setDone(props.item.done);
     }
 
     const dismissModal = () => {
+        setTitle('');
+        setDescription('');
+        setDone('');
+        setFormMessage('');
+        setChanged(false);
         setModalIsOpen(false);
     }
 
     const handleChange = (event) => {
+        setChanged(true)
         const source = event.target;
+
         switch(source.id) {
             case 'titleField':
                 setTitle(source.value);
@@ -39,25 +49,29 @@ function TodoItem(props) {
                 setDescription(source.value);
                 break;
             case 'doneField':
-                setDone(source.checked);
+                setDone(source.checked === true? 1 : 0);
                 break;
-            default:
-                break;
-        }
-    }
-
+                default:
+                    break;
+                }
+            }
+            
     const handleSave = (event) => {
         event.preventDefault();
         console.log(done)
-
-        const task = {
-            title:title,
-            description:description,
-            done:done,
-            uri:props.item.uri
-        };
-        dismissModal();
-        props.onSave(task);
+                
+        if (changed) {
+            const task = {
+                title:title,
+                description:description,
+                done:done,
+                uri:props.item.uri
+            };
+            dismissModal();
+            props.onSave(task);
+        } else {
+            setFormMessage('Nothing to save. Make changes first or dismiss this prompt.');
+        }
     }
 
     const handleDelete = () => {
@@ -88,13 +102,16 @@ function TodoItem(props) {
                 shouldCloseOnEsc={true}
                 shouldReturnFocusAfterClose={true} >                
                 <h2>Edit Task</h2>
-                <form onSubmit={handleSave} >
+                <form onSubmit={handleSave} autoComplete={'false'} >
                     <div>Title:<br />
                     <input name={'Title'} className={'text'} type='text' id='titleField' defaultValue={title} onChange={handleChange} /></div>
                     <div>Description:<br />
                     <textarea className={'text'} rows={2} id='descriptionField' defaultValue={description} onChange={handleChange} /></div>
-                    <div>Done: <input className={'checkbox'} type='checkbox' id='doneField' defaultChecked={done} onChange={handleChange} /></div>
-                    <div><button type='submit'>Save</button></div>
+                    <div>Done: <input className={'checkbox'} type='checkbox' id='doneField' checked={done} onChange={handleChange} /></div>
+                    <div>
+                        <button type='submit' enabled='false'>Save</button>
+                        &emsp;&emsp;<span className={'info'}>{formMessage}</span>
+                    </div>
                 </form>
             </Modal>
         </div>
