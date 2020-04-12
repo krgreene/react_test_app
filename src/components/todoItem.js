@@ -49,7 +49,7 @@ function TodoItem(props) {
                 setDescription(source.value);
                 break;
             case 'doneField':
-                setDone(source.checked === true? 1 : 0);
+                setDone(Number(source.checked));
                 break;
                 default:
                     break;
